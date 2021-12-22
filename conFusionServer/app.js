@@ -23,6 +23,8 @@ var passport = require('passport');
 
 var app = express();
 
+
+
 // Secure traffic only
 app.all('*', (req, res, next) => {
   if (req.secure) {
@@ -41,7 +43,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 //app.use(cookieParser('12345-67890-09876-54321'));
+
+
 
 app.use(session({
   name: 'session-id',
@@ -88,6 +99,7 @@ app.use(function(err, req, res, next) {
 const mongoose = require('mongoose');
 
 const Dishes = require('./models/dishes');
+const Leaders = require('./models/leaders');
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
